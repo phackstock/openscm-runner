@@ -1,9 +1,15 @@
 """
 Module for running FaIR
 """
+
 import logging
-import multiprocessing
+import os
 from concurrent.futures import ProcessPoolExecutor
+
+if os.environ.get("USE_BILLIARD_INSTEAD_OF_MULTIPROCESSING", "false") == "true":
+    import billiard as multiprocessing
+else:
+    import multiprocessing
 
 import numpy as np
 from scmdata import ScmRun, run_append

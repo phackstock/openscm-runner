@@ -1,11 +1,17 @@
 """
 Module to keep track of MAGICC instances on disk
 """
+
 import logging
-import multiprocessing
+import os
 import shutil
 import tempfile
 import typing
+
+if os.environ.get("USE_BILLIARD_INSTEAD_OF_MULTIPROCESSING", "false") == "true":
+    import billiard as multiprocessing
+else:
+    import multiprocessing
 
 from ...settings import config
 from ._compat import pymagicc

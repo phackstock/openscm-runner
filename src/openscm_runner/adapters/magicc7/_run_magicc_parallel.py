@@ -1,14 +1,19 @@
 """
 Module for running MAGICC in parallel
 """
+
 import logging
-import multiprocessing
+import os
 import os.path
 import tempfile
 import typing
 from concurrent.futures import ProcessPoolExecutor
 from subprocess import CalledProcessError  # nosec
 
+if os.environ.get("USE_BILLIARD_INSTEAD_OF_MULTIPROCESSING", "false") == "true":
+    import billiard as multiprocessing
+else:
+    import multiprocessing
 import scmdata
 
 from ...settings import config
