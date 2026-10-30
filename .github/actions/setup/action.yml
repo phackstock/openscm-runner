@@ -47,6 +47,15 @@ runs:
         # poetry env use "python${{ inputs.python-version }}"
         poetry config virtualenvs.create true
         poetry config virtualenvs.in-project true
+    - name: Install poetry-plugin-export for Poetry 2
+      shell: bash
+      run: |
+        # this is required because the poetry-plugin-export is not installed by default
+        # in Poetry 2, but is required for liccheck to work
+        poetry_version="$(poetry --version | awk '{print $NF}')"
+        if [[ "$poetry_version" =~ ^2\. ]]; then
+          poetry self add poetry-plugin-export
+        fi
     - name: Install dependencies
       if: ${{ (inputs.run-poetry-install == 'true')  && (steps.setup-python.outputs.cache-hit != 'true') }}
       shell: bash
